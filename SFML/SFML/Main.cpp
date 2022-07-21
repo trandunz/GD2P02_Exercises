@@ -1,8 +1,9 @@
 #include "SFML/Graphics.hpp"
-#include "SFML/Window.hpp"
+#include "box2d/box2d.h"
 
 sf::RenderWindow* RenderWindow = nullptr;
 sf::Event EventHandle;
+b2World World({ 0.0f,9.81f });
 
 void InitRenderWindow(sf::Vector2i _size, std::string _title, sf::Uint32 _style, sf::ContextSettings _settings);
 
