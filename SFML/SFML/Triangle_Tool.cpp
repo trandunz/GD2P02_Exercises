@@ -46,17 +46,17 @@ bool Triangle_Tool::CheckForLineIntersection(Shape_Tool& _line)
 	bool intersecting = false;
 	if (result >= 0 && result <= 1)
 	{
-		m_IntersectArea.append({ GetPointOnLine(_line.GetVertices(), result), sf::Color::Green });
+		m_IntersectArea.append({ Lerp(_line.GetVertices()[0].position, _line.GetVertices()[1].position, result), sf::Color::Green });
 		intersecting = true;
 	}
 	if (result2 >= 0 && result2 <= 1)
 	{
-		m_IntersectArea.append({ GetPointOnLine(_line.GetVertices(), result2), sf::Color::Green });
+		m_IntersectArea.append({ Lerp(_line.GetVertices()[0].position, _line.GetVertices()[1].position, result2), sf::Color::Green});
 		intersecting = true;
 	}
 	if (result3 >= 0 && result3 <= 1)
 	{
-		m_IntersectArea.append({ GetPointOnLine(_line.GetVertices(), result3), sf::Color::Green });
+		m_IntersectArea.append({ Lerp(_line.GetVertices()[0].position, _line.GetVertices()[1].position, result3), sf::Color::Green });
 		intersecting = true;
 	}	
 	return intersecting;

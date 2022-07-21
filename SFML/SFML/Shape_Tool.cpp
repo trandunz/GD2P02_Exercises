@@ -41,7 +41,7 @@ sf::VertexArray Shape_Tool::GetVertices() const
 
 sf::Vector2f Shape_Tool::GetNormal()
 {
-	sf::Vector3f normal = CrossProduct(Normalize(m_Vertices[1].position - m_Vertices[0].position), Normalize({ m_Vertices[0].position.x, m_Vertices[0].position.y, 1 }));
+	sf::Vector3f normal = CrossProduct(Normalize(m_Vertices[1].position - m_Vertices[0].position), Normalize({ m_Vertices[0].position.x, m_Vertices[0].position.y, -1 }));
 	return { normal.x, normal.y};
 }
 

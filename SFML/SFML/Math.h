@@ -53,9 +53,9 @@ inline float Lerp(float _start, float _end, float _ratio)
     return _start * (1 - _ratio) + _end * _ratio;
 }
 
-inline sf::Vector2f GetPointOnLine(sf::VertexArray _line, float _ratio)
+inline sf::Vector2f Lerp(sf::Vector2f& _start, sf::Vector2f& _end, float _ratio) 
 {
-    return sf::Vector2f{ Lerp(_line[0].position.x, _line[1].position.x, _ratio), Lerp(_line[0].position.y, _line[1].position.y, _ratio) };
+    return _start * _ratio + _end * (1.0f - _ratio);
 }
 
 inline sf::Vector3f ProjectVectorOntoVector(sf::Vector3f _v1, sf::Vector3f _v2)
