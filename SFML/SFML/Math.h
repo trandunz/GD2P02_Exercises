@@ -1,7 +1,18 @@
 #pragma once
-#include "SFML/Graphics.hpp"
+#include "SFML/System/Vector3.hpp"
+#include "SFML/System/Vector2.hpp"
+#include <cstdlib>
 
-#define PI 3.14159265
+#define PI 3.14159265359
+
+inline sf::Vector2f Normalize(sf::Vector2f _v)
+{
+    float length = sqrtf((_v.x * _v.x) + (_v.y * _v.y));
+    if (length != 0)
+        return { _v.x / length, _v.y / length };
+    else
+        return { _v.x, _v.y };
+}
 
 inline sf::Vector3f Normalize(sf::Vector3f _v)
 {
@@ -17,10 +28,9 @@ inline float DotProduct(sf::Vector3f _v1, sf::Vector3f _v2)
     return ((_v1.x * _v2.x) + (_v1.y * _v2.y) + (_v1.z * _v2.z));
 }
 
-inline sf::Vector3f ProjectVectorOntoVector(sf::Vector3f _v1, sf::Vector3f _v2)
+inline float DotProduct(sf::Vector2f _v1, sf::Vector2f _v2)
 {
-    float t = DotProduct(_v1, Normalize(_v2));
-    return _v2 * t;
+    return ((_v1.x * _v2.x) + (_v1.y * _v2.y));
 }
 
 inline sf::Vector3f CrossProduct(sf::Vector3f _v1, sf::Vector3f _v2)
@@ -28,14 +38,30 @@ inline sf::Vector3f CrossProduct(sf::Vector3f _v1, sf::Vector3f _v2)
     return {((_v1.y * _v2.z) - (_v1.z * _v2.y)), ((_v1.z * _v2.x) - (_v1.x * _v2.z)), ((_v1.x * _v1.y) - (_v1.y * _v2.x))};
 }
 
-
-inline sf::Vector2f Normalize(sf::Vector2f _v)
+inline sf::Vector3f CrossProduct(sf::Vector2f _v1, sf::Vector3f _v2)
 {
-    float length = sqrtf((_v.x * _v.x) + (_v.y * _v.y));
-    if (length != 0)
-        return { _v.x / length, _v.y / length};
-    else
-        return { _v.x, _v.y};
+    return { ((_v1.y * _v2.z) - (0 * _v2.y)), ((0 * _v2.x) - (_v1.x * _v2.z)), ((_v1.x * _v1.y) - (_v1.y * _v2.x)) };
+}
+
+inline float Magnitude(sf::Vector3f _v)
+{
+    return sqrtf((_v.x * _v.x) + (_v.y * _v.y) + (_v.z * _v.z));
+}
+
+inline float Lerp(float _start, float _end, float _ratio)
+{
+    return _start * (1 - _ratio) + _end * _ratio;
+}
+
+inline sf::Vector2f GetPointOnLine(sf::VertexArray _line, float _ratio)
+{
+    return sf::Vector2f{ Lerp(_line[0].position.x, _line[1].position.x, _ratio), Lerp(_line[0].position.y, _line[1].position.y, _ratio) };
+}
+
+inline sf::Vector3f ProjectVectorOntoVector(sf::Vector3f _v1, sf::Vector3f _v2)
+{
+    float t = DotProduct(_v1, Normalize(_v2));
+    return _v2 * t;
 }
 
 inline float GetAngleBetweenVectors(sf::Vector3f _v1, sf::Vector3f _v2)

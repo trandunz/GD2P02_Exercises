@@ -1,9 +1,10 @@
-#include "SFML/Graphics.hpp"
+#include "Triangle_Tool.h"
 #include "box2d/box2d.h"
 
-sf::RenderWindow* RenderWindow = nullptr;
+sf::RenderWindow RenderWindow;
 sf::Event EventHandle;
-b2World World({ 0.0f,9.81f });
+Shape_Tool TriangleCutter;
+Triangle_Tool TriangleTool;
 
 void InitRenderWindow(sf::Vector2i _size, std::string _title, sf::Uint32 _style, sf::ContextSettings _settings);
 
@@ -27,14 +28,7 @@ int main()
 
 void InitRenderWindow(sf::Vector2i _size, std::string _title, sf::Uint32 _style, sf::ContextSettings _settings)
 {
-	if (RenderWindow != nullptr)
-	{
-		RenderWindow->create(sf::VideoMode(_size.x, _size.y), _title, _style, _settings);
-	}
-	else
-	{
-		RenderWindow = new sf::RenderWindow(sf::VideoMode(_size.x, _size.y), _title, _style, _settings);
-	}
+	RenderWindow.create(sf::VideoMode(_size.x, _size.y), _title, _style, _settings);
 }
 
 void Start()
@@ -44,36 +38,56 @@ void Start()
 
 void Update()
 {
-	while (RenderWindow->isOpen())
+	while (RenderWindow.isOpen())
 	{
 		PollEvents();
+
+		
+
 		Render();
 	}
 }
 
 void PollEvents()
 {
-	if (RenderWindow->pollEvent(EventHandle))
+	if (RenderWindow.pollEvent(EventHandle))
 	{
 		if (EventHandle.type == sf::Event::Closed)
 		{
-			RenderWindow->close();
+			RenderWindow.close();
 		}
+		if (EventHandle.type == sf::Event::KeyPressed
+			&& sf::Keyboard::isKeyPressed(sf::Keyboard::L))
+		{
+			TriangleCutter.ResetShape();
+		}
+		if (EventHandle.type == sf::Event::KeyPressed
+			&& sf::Keyboard::isKeyPressed(sf::Keyboard::T))
+		{
+			TriangleTool.ResetShape();
+		}
+
+		std::cout << TriangleTool.CheckForLineIntersection(TriangleCutter) << std::endl;
+
+		
+		TriangleCutter.HandleMouseInput(EventHandle, RenderWindow);
+		TriangleTool.HandleMouseInput(EventHandle, RenderWindow);
 	}
 }
 
 void Render()
 {
-	RenderWindow->clear();
+	RenderWindow.clear();
 
-	RenderWindow->display();
+	RenderWindow.draw(TriangleCutter);
+	RenderWindow.draw(TriangleTool);
+	
+
+	RenderWindow.display();
 }
 
 int Cleanup()
 {
-	if (RenderWindow != nullptr)
-		delete RenderWindow;
-	RenderWindow = nullptr;
 
 	return 0;
 }
