@@ -29,12 +29,12 @@ inline float DotProduct(Vec3i _v1, Vec3i _v2)
 	return ((_v1.x * _v2.x) + (_v1.y * _v2.y) + (_v1.z * _v2.z));
 }
 
-int GrabNumberInput()
+int GrabNumberInput(bool _bcin)
 {
 	int input = 0;
 	while (input < ASCIIOFFSET || input > 58)
 		input = _getch();
-	return input;
+	return input - ASCIIOFFSET;
 }
 
 COLLISION_RESULT Point_Plane_Collision(Plane _plane, Vec3i _point)
@@ -56,28 +56,28 @@ int main()
 	std::cout << "Define A Plane" << std::endl;
 	std::cout << "--------------" << std::endl;
 	std::cout << "A Point (x,y,z): (";
-	plane.Point.x = GrabNumberInput() - ASCIIOFFSET;
+	plane.Point.x = GrabNumberInput(true);
 	std::cout << (char)(plane.Point.x + ASCIIOFFSET) << ",";
-	plane.Point.y = GrabNumberInput() - ASCIIOFFSET;
+	plane.Point.y = GrabNumberInput(true);
 	std::cout << (char)(plane.Point.y + ASCIIOFFSET) << ",";
-	plane.Point.z = GrabNumberInput() - ASCIIOFFSET;
+	plane.Point.z = GrabNumberInput(true);
 	std::cout << (char)(plane.Point.z + ASCIIOFFSET) << ")" << std::endl;
 
 	std::cout << "A Normal / Face Direction (x,y,z): (";
-	plane.Normal.x = GrabNumberInput() - ASCIIOFFSET;
+	plane.Normal.x = GrabNumberInput(true);
 	std::cout << (char)(plane.Normal.x + ASCIIOFFSET) << ",";
-	plane.Normal.y = GrabNumberInput() - ASCIIOFFSET;
+	plane.Normal.y = GrabNumberInput(true);
 	std::cout << (char)(plane.Normal.y + ASCIIOFFSET) << ",";
-	plane.Normal.z = GrabNumberInput() - ASCIIOFFSET;
+	plane.Normal.z = GrabNumberInput(true);
 	std::cout << (char)(plane.Normal.z + ASCIIOFFSET) << ")" << std::endl;
 
 	Vec3i point;
 	std::cout << "Pick A Point For Intersection Test (x,y,z): (";
-	point.x = GrabNumberInput() - ASCIIOFFSET;
+	point.x = GrabNumberInput(true);
 	std::cout << (char)(point.x + ASCIIOFFSET) << ",";
-	point.y = GrabNumberInput() - ASCIIOFFSET;
+	point.y = GrabNumberInput(true);
 	std::cout << (char)(point.y + ASCIIOFFSET) << ",";
-	point.z = GrabNumberInput() - ASCIIOFFSET;
+	point.z = GrabNumberInput(true);
 	std::cout << (char)(point.z + ASCIIOFFSET) << ")" << std::endl;
 
 	COLLISION_RESULT Result = Point_Plane_Collision(plane, point);
