@@ -18,5 +18,22 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Movers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LiquidShape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Movers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LiquidShape.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
