@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "001.2 – Line Segment vs P
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "001.3 – Triangle vs Plane Function", "001.3 – Triangle vs Plane Function\001.3 – Triangle vs Plane Function.vcxproj", "{F8BA0A32-FB4C-48A7-9D68-05B4DF9D661E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "002.1 - 002.3", "002.1 - 002.3\002.1 - 002.3.vcxproj", "{0F7AEC22-C132-4F3E-B163-6C01EB26029C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{F8BA0A32-FB4C-48A7-9D68-05B4DF9D661E}.Release|x64.Build.0 = Release|x64
 		{F8BA0A32-FB4C-48A7-9D68-05B4DF9D661E}.Release|x86.ActiveCfg = Release|Win32
 		{F8BA0A32-FB4C-48A7-9D68-05B4DF9D661E}.Release|x86.Build.0 = Release|Win32
+		{0F7AEC22-C132-4F3E-B163-6C01EB26029C}.Debug|x64.ActiveCfg = Debug|x64
+		{0F7AEC22-C132-4F3E-B163-6C01EB26029C}.Debug|x64.Build.0 = Debug|x64
+		{0F7AEC22-C132-4F3E-B163-6C01EB26029C}.Debug|x86.ActiveCfg = Debug|Win32
+		{0F7AEC22-C132-4F3E-B163-6C01EB26029C}.Debug|x86.Build.0 = Debug|Win32
+		{0F7AEC22-C132-4F3E-B163-6C01EB26029C}.Release|x64.ActiveCfg = Release|x64
+		{0F7AEC22-C132-4F3E-B163-6C01EB26029C}.Release|x64.Build.0 = Release|x64
+		{0F7AEC22-C132-4F3E-B163-6C01EB26029C}.Release|x86.ActiveCfg = Release|Win32
+		{0F7AEC22-C132-4F3E-B163-6C01EB26029C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
