@@ -15,7 +15,7 @@ LiquidShape::~LiquidShape()
     m_Mesh = nullptr;
 }
 
-bool LiquidShape::CheckForCollisions(std::vector<Movers*>& _objects)
+bool LiquidShape::CheckForCollisions(std::vector<Object*>& _objects)
 {
     bool hasCollided = false;
     for (auto& object : _objects)
@@ -35,7 +35,7 @@ void LiquidShape::draw(sf::RenderTarget& target, sf::RenderStates states) const
         target.draw(*m_Mesh);
 }
 
-void LiquidShape::ApplyFriction(Movers& _object)
+void LiquidShape::ApplyFriction(Object& _object)
 {
     float objectSpeed = Mag(_object.GetVelocity());
     if (objectSpeed <= 0)

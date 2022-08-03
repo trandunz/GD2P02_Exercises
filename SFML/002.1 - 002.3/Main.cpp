@@ -5,7 +5,7 @@
 sf::RenderWindow RenderWindow;
 sf::Event EventHandler;
 sf::Clock WorldTimer;
-std::vector<Movers*> MoverObjects{};
+std::vector<Object*> MoverObjects{};
 LiquidShape WaterBody{ {200,700},{400,200} };
 
 float PreviousFrame = 0.0f;
@@ -33,8 +33,8 @@ int main()
 
 void Start()
 {
-    MoverObjects.emplace_back(new Movers({ 200,500 }, 1));
-    MoverObjects.emplace_back(new Movers({ 600,500 }, 1));
+    MoverObjects.emplace_back(new Object({ 200,500 }, 1));
+    MoverObjects.emplace_back(new Object({ 600,500 }, 1));
 
     for (auto& mover : MoverObjects)
     {
