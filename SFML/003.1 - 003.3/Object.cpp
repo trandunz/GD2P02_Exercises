@@ -1,5 +1,9 @@
 #include "Object.h"
 
+Object::Object()
+{
+}
+
 Object::Object(sf::Vector2f _startPos, float _mass)
 {
 	m_Mesh = new sf::CircleShape(50.0f);
@@ -14,12 +18,19 @@ Object::Object(sf::Vector2f _startPos, float _mass)
 
 Object::~Object()
 {
+	m_CustomMesh = nullptr;
+
 	if (m_Mesh)
 		delete m_Mesh;
 	m_Mesh = nullptr;
 
 	if (m_RenderWindow)
 		m_RenderWindow = nullptr;
+}
+
+void Object::SetMesh(Mesh* _mesh)
+{
+	m_CustomMesh = _mesh;
 }
 
 void Object::SetRenderWindow(sf::RenderWindow& _renderWindow)
@@ -47,6 +58,9 @@ void Object::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if (m_Mesh)
 		target.draw(*m_Mesh);
+
+	if (m_CustomMesh)
+		target.draw(*m_CustomMesh);
 }
 
 void Object::ApplyGravity(float _strength)
@@ -62,7 +76,7 @@ void Object::ApplyForce(sf::Vector2f _force)
 
 void Object::ApplyFriction(float _coefficient)
 {
-	if (m_RenderWindow)
+	if (m_RenderWindow && m_Mesh)
 	{
 		if (m_Mesh->getPosition().y + m_Mesh->getRadius() >= m_RenderWindow->getSize().y
 			|| m_Mesh->getPosition().x - m_Mesh->getRadius() <= 0
@@ -78,7 +92,7 @@ void Object::ApplyFriction(float _coefficient)
 
 void Object::CollideWithWindowBounds()
 {
-	if (m_RenderWindow)
+	if (m_RenderWindow && m_Mesh)
 	{
 		if (m_Mesh->getPosition().y + m_Mesh->getRadius() >= m_RenderWindow->getSize().y)
 		{
@@ -123,4 +137,34 @@ float Object::GetReferenceArea() const
 
 	float scaledRadius = m_Mesh->getRadius() / 1000.0f;
 	return PI * (scaledRadius * scaledRadius);
+}
+
+void Object::SetPosition(sf::Vector2f _position)
+{
+	if (m_CustomMesh)
+	{ 
+		for (int i = 0; i < m_CustomMesh->m_VertexArray.getVertexCount(); i++)
+		{
+			m_CustomMesh->m_VertexArray[i].position += _position;
+		}
+	}
+}
+
+void Object::Scale(float _scale)
+{
+	if (m_CustomMesh)
+	{
+		for (int i = 0; i < m_CustomMesh->m_VertexArray.getVertexCount(); i++)
+		{
+			m_CustomMesh->m_VertexArray[i].position *= _scale;
+		}
+	}
+}
+
+sf::Vector2f Object::GetPosition()
+{
+	if (m_Mesh)
+		return m_Mesh->getPosition();
+	else
+		return {};
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "CapsuleObject.h"
 #include "Object.h"
 
 class LiquidShape : public sf::Drawable

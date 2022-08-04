@@ -43,8 +43,8 @@ void LiquidShape::ApplyFriction(Object& _object)
         return;
     }
     float area = _object.GetReferenceArea();
-    float waterDensity = 0.997f;
-    float waterDragCoefficient = 0.345f;
+    float waterDensity = 1.0f;
+    float waterDragCoefficient = 0.47f;
     sf::Vector2f unitVelocity = Normalize(_object.GetVelocity());
     
 
