@@ -1,5 +1,5 @@
 #include "LiquidShape.h"
-#include "Mesh.h"
+#include "ConvexPolygon.h"
 
 #define FIXED_DT 0.01666666666666666666f
 
@@ -8,6 +8,7 @@ sf::Event EventHandler;
 sf::Clock WorldTimer;
 std::vector<Object*> MoverObjects{};
 std::vector<CapsuleObject*> CapsuleObjects{};
+std::vector<ConvexPolygon*> Polygons{};
 Mesh Triangle(
     { 
         {{0.5f,0.0f}, sf::Color::Red},
@@ -43,8 +44,12 @@ void Start()
     //MoverObjects.emplace_back(new Object({ 200,500 }, 1));
     //MoverObjects.emplace_back(new Object({ 600,500 }, 1));
 
-    CapsuleObjects.emplace_back(new CapsuleObject({ 400, 400 }, { 400, 450 }, 20.0f, 1));
-    CapsuleObjects.emplace_back(new CapsuleObject({ 400, 200 }, { 400, 250 }, 20.0f, 1));
+    //CapsuleObjects.emplace_back(new CapsuleObject({ 400, 400 }, { 400, 450 }, 20.0f, 1, sf::Color::Red));
+    //CapsuleObjects.emplace_back(new CapsuleObject({ 400, 200 }, { 400, 250 }, 20.0f, 1, sf::Color::Green));
+
+    Polygons.emplace_back(new ConvexPolygon({ 0,0 }, 1));
+    Polygons.back()->Scale(200.0f);
+    Polygons.back()->SetPosition({ 400, 400 });
 
     for (auto& mover : MoverObjects)
     {
@@ -53,6 +58,10 @@ void Start()
     for (auto& capsule : CapsuleObjects)
     {
         capsule->SetRenderWindow(RenderWindow);
+    }
+    for (auto& polygon : Polygons)
+    {
+        polygon->SetRenderWindow(RenderWindow);
     }
 
     Triangle.Scale(500.0f);
@@ -92,7 +101,11 @@ void Update()
             capsule->Update(DeltaTime);
         }
 
-        
+        for (auto& polygon : Polygons)
+        {
+            polygon->UpdatePhysics(FIXED_DT);
+            polygon->Update(DeltaTime);
+        }
 
         Render();
     }
@@ -112,6 +125,10 @@ void HandleEvents()
             {
                 mover->ApplyForce({ 1000.0f, -50000.0f });
             }
+            for (auto& polygon : Polygons)
+            {
+                polygon->ApplyForce({ 1000.0f, -50000.0f });
+            }
         }
     }
 
@@ -129,6 +146,10 @@ void Render()
     for (auto& capsule : CapsuleObjects)
     {
         RenderWindow.draw(*capsule);
+    }
+    for (auto& polygon : Polygons)
+    {
+        RenderWindow.draw(*polygon);
     }
 
     RenderWindow.display();
@@ -154,6 +175,15 @@ int Cleanup()
     CapsuleObjects.clear();
     CapsuleObjects.resize(0);
 
+    for (auto& polygon : Polygons)
+    {
+        if (polygon)
+            delete polygon;
+        polygon = nullptr;
+    }
+    Polygons.clear();
+    Polygons.resize(0);
+
     return 0;
 }
 
@@ -173,5 +203,9 @@ void ApplyGravity(float _strength)
     for (auto& capsule : CapsuleObjects)
     {
         capsule->ApplyGravity(_strength);
+    }
+    for (auto& polygon : Polygons)
+    {
+        polygon->ApplyGravity(_strength);
     }
 }

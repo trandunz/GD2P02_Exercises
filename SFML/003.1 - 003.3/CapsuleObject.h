@@ -3,7 +3,7 @@
 class CapsuleObject : public sf::Drawable
 {
 public:
-    CapsuleObject(sf::Vector2f _startPos, sf::Vector2f _endPos, float _radius, float _mass);
+    CapsuleObject(sf::Vector2f _startPos, sf::Vector2f _endPos, float _radius, float _mass, sf::Color _color);
     virtual ~CapsuleObject();
 
     void SetRenderWindow(sf::RenderWindow& _renderWindow);
@@ -20,6 +20,8 @@ private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     void CollideCircleWithBounds(sf::CircleShape& _circle);
+    void OffsetOtherShapes(sf::Shape& _thisShape, sf::Vector2f _amount);
+    void OffsetShapes(sf::Vector2f _amount);
 
     sf::RenderWindow* m_RenderWindow = nullptr;
 

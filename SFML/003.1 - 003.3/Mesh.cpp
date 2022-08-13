@@ -14,6 +14,26 @@ Mesh::Mesh(std::vector<sf::Vertex> _vertices)
 	}
 }
 
+Mesh::Mesh(int _sideCount)
+{
+	m_VertexArray.setPrimitiveType(sf::Triangles);
+
+	float angle = 0.0f, increment = (PI * 2 / _sideCount);
+
+	// Centre
+	m_VertexArray.append({{0.0f,  0.0f},sf::Color::Red });
+
+	// Fan Around Centre
+	float xPos, yPos;
+	for (unsigned i = 0; i < _sideCount; i++)
+	{
+		xPos = cos(angle);
+		yPos = sin(angle);
+		m_VertexArray.append({ {xPos,  yPos},sf::Color::Red });
+		angle += increment;
+	}
+}
+
 Mesh::~Mesh()
 {
 	m_VertexArray.clear();
@@ -54,6 +74,30 @@ void Mesh::Scale(float _scale)
 	{
 		m_VertexArray[i].position *= _scale;
 	}
+}
+
+void Mesh::Move(sf::Vector2f _amount)
+{
+	for (int i = 0; i < m_VertexArray.getVertexCount(); i++)
+	{
+		m_VertexArray[i].position += _amount;
+	}
+}
+
+bool Mesh::CollideWithWindowBounds(sf::Vector2u _windowSize)
+{
+	for (int i = 0; i < m_VertexArray.getVertexCount(); i++)
+	{
+		if (m_VertexArray[i].position.y >= _windowSize.y
+			|| m_VertexArray[i].position.x <= 0
+			|| m_VertexArray[i].position.y <= 0
+			|| m_VertexArray[i].position.x >= _windowSize.x)
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 sf::Vector2f Mesh::GetCentre()

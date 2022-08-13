@@ -9,7 +9,7 @@ Object::Object(sf::Vector2f _startPos, float _mass)
 	m_Mesh = new sf::CircleShape(50.0f);
 	m_Mesh->setFillColor(sf::Color::Green);
 	m_Mesh->setOutlineColor(sf::Color::Red);
-	m_Mesh->setOutlineThickness(10.0f);
+	m_Mesh->setOutlineThickness(1.0f);
 	m_Mesh->setOrigin(m_Mesh->getRadius(), m_Mesh->getRadius());
 
 	m_Mass = _mass;
@@ -125,7 +125,7 @@ sf::FloatRect Object::GetGlobalBounds()
 	return m_Mesh->getGlobalBounds();
 }
 
-sf::Vector2f Object::GetVelocity() const
+sf::Vector2f& Object::GetVelocity()
 {
 	return m_Velocity;
 }

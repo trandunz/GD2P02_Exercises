@@ -1,6 +1,6 @@
 #include "CapsuleObject.h"
 
-CapsuleObject::CapsuleObject(sf::Vector2f _startPos, sf::Vector2f _endPos, float _radius, float _mass)
+CapsuleObject::CapsuleObject(sf::Vector2f _startPos, sf::Vector2f _endPos, float _radius, float _mass, sf::Color _color)
 {
 	m_Radius = _radius;
 
@@ -8,9 +8,9 @@ CapsuleObject::CapsuleObject(sf::Vector2f _startPos, sf::Vector2f _endPos, float
 	Bot = sf::CircleShape(_radius);
 	Mid = sf::RectangleShape({ _radius , _radius });
 
-	Top.setFillColor(sf::Color::Red);
-	Bot.setFillColor(sf::Color::Red);
-	Mid.setFillColor(sf::Color::Red);
+	Top.setFillColor(_color);
+	Bot.setFillColor(_color);
+	Mid.setFillColor(_color);
 
 	Mid.setSize({ _radius * 2, Mag(_endPos - _startPos) });
 
@@ -73,14 +73,17 @@ bool CapsuleObject::CheckCollision(CapsuleObject& _capsule)
 	sf::Vector2f orientation = Normalize(_capsule.Bot.getPosition() - _capsule.Top.getPosition());
 	sf::Vector2f vectorToPoint = Bot.getPosition() - _capsule.Top.getPosition();
 	float t = DotProduct(vectorToPoint, orientation);
-	sf::Vector2f projectedPoint = _capsule.Top.getPosition() + (orientation * t);
+	sf::Vector2f projectedPoint = _capsule.Top.getPosition() + (-orientation * t);
 
-	float distance = Mag(Bot.getPosition() - projectedPoint);
+	float distance = Mag(Top.getPosition() - projectedPoint);
 	if (distance <= _capsule.m_Radius + m_Radius)
 	{
-		return true;
+		m_Velocity.y *= -1;
+		//ApplyForce(Normalize(vectorToPoint) * 10000.0f);
 		std::cout << "Collision!" << std::endl;
+		return true;
 	}
+	
 	return false;
 }
 
@@ -95,23 +98,52 @@ void CapsuleObject::CollideCircleWithBounds(sf::CircleShape& _circle)
 {
 	if (_circle.getPosition().y + _circle.getRadius() >= m_RenderWindow->getSize().y)
 	{
-		//_circle.setPosition(_circle.getPosition().x, m_RenderWindow->getSize().y - _circle.getRadius());
+		float collisionDepth = m_RenderWindow->getSize().y - (_circle.getPosition().y + _circle.getRadius());
+
+		OffsetShapes({ 0,collisionDepth });
 		m_Velocity.y *= -1;
 	}
 	if (_circle.getPosition().y - _circle.getRadius() <= 0)
 	{
-		//_circle.setPosition(_circle.getPosition().x, _circle.getRadius());
+		float collisionDepth = 0 + (_circle.getPosition().y - _circle.getRadius());
+
+		OffsetShapes({ 0,collisionDepth });
 		m_Velocity.y *= -1;
 	}
 	if (_circle.getPosition().x + _circle.getRadius() >= m_RenderWindow->getSize().x)
 	{
-		//_circle.setPosition(m_RenderWindow->getSize().x - _circle.getRadius(), _circle.getPosition().y);
-		
+		float collisionDepth = m_RenderWindow->getSize().x - _circle.getPosition().x + _circle.getRadius();
+
+		OffsetShapes({ collisionDepth,0 });
 		m_Velocity.x *= -1;
 	}
 	if (_circle.getPosition().x - _circle.getRadius() <= 0)
 	{
-		//_circle.setPosition(_circle.getRadius(), _circle.getPosition().y);
+		float collisionDepth = 0 + _circle.getPosition().x - _circle.getRadius();
+		OffsetShapes({ collisionDepth,0 });
 		m_Velocity.x *= -1;
 	}
+}
+
+void CapsuleObject::OffsetOtherShapes(sf::Shape& _thisShape, sf::Vector2f _amount)
+{
+	if (&Top != &_thisShape)
+	{
+		Top.move(_amount);
+	}
+	if (&Bot != &_thisShape)
+	{
+		Bot.move(_amount);
+	}
+	if (&Mid != &_thisShape)
+	{
+		Mid.move(_amount);
+	}
+}
+
+void CapsuleObject::OffsetShapes(sf::Vector2f _amount)
+{
+	Mid.move(_amount);
+	Bot.move(_amount);
+	Top.move(_amount);
 }
