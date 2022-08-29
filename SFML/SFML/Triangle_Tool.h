@@ -1,5 +1,6 @@
 #pragma once
 #include "Shape_Tool.h"
+#include <vector>
 class Triangle_Tool :
     public Shape_Tool
 {
@@ -12,5 +13,6 @@ public:
 
 private:
     sf::VertexArray m_IntersectArea;
+    std::vector<sf::CircleShape> m_IntersectionPoints{};
 };
 

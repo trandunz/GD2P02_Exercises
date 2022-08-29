@@ -15,6 +15,10 @@ void Triangle_Tool::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 {
 	target.draw(m_Vertices);
 	target.draw(m_IntersectArea);
+	for (auto& point : m_IntersectionPoints)
+	{
+		target.draw(point);
+	}
 }
 
 void Triangle_Tool::HandleMouseInput(sf::Event& _event, sf::RenderWindow& _renderWindow)
@@ -39,25 +43,62 @@ bool Triangle_Tool::CheckForLineIntersection(Shape_Tool& _line)
 		m_IntersectArea.resize(0);
 		return false;
 	}
+	
+	m_IntersectionPoints.clear();
 
-	float result = DotProduct(_line.GetNormal(), _line.GetVertices()[0].position - m_Vertices[0].position) / DotProduct(_line.GetNormal(), m_Vertices[1].position - m_Vertices[0].position);
-	float result2 = DotProduct(_line.GetNormal(), _line.GetVertices()[0].position - m_Vertices[1].position) / DotProduct(_line.GetNormal(), m_Vertices[2].position - m_Vertices[1].position);
-	float result3 = DotProduct(_line.GetNormal(), _line.GetVertices()[0].position - m_Vertices[2].position) / DotProduct(_line.GetNormal(), m_Vertices[0].position - m_Vertices[2].position);
+	sf::Vector3f lineStart = { GetVertices()[0].position.x, GetVertices()[0].position.y, 0.0f };
+	sf::Vector3f lineEnd = { GetVertices()[1].position.x, GetVertices()[1].position.y, 0.0f };
+	sf::Vector3f pointOnPlane = { _line.GetVertices()[0].position.x, _line.GetVertices()[0].position.y,0.0f };
+	float result = LinePlaneIntersection(_line.GetNormal(), pointOnPlane, lineStart, lineEnd);
+	lineStart = { GetVertices()[1].position.x, GetVertices()[1].position.y, 0.0f };
+	lineEnd = { GetVertices()[2].position.x, GetVertices()[2].position.y, 0.0f };
+	float result2 = LinePlaneIntersection(_line.GetNormal(), pointOnPlane, lineStart, lineEnd);
+	lineStart = { GetVertices()[2].position.x, GetVertices()[2].position.y, 0.0f };
+	lineEnd = { GetVertices()[0].position.x, GetVertices()[0].position.y, 0.0f };
+	float result3 = LinePlaneIntersection(_line.GetNormal(), pointOnPlane, lineStart, lineEnd);
+
 	bool intersecting = false;
 	if (result >= 0 && result <= 1)
 	{
-		m_IntersectArea.append({ Lerp(_line.GetVertices()[0].position, _line.GetVertices()[1].position, result), sf::Color::Green });
+		lineStart = { GetVertices()[0].position.x, GetVertices()[0].position.y, 0.0f };
+		lineEnd = { GetVertices()[1].position.x, GetVertices()[1].position.y, 0.0f };
+		sf::Vector3f intersectionpoint;
+		intersectionpoint = lineStart + (result * (lineEnd - lineStart));
+		sf::CircleShape pointMesh(1.0f);
+		pointMesh.setOrigin({ 5.0f,5.0f });
+		pointMesh.setFillColor(sf::Color::Green);
+		pointMesh.setPosition({ intersectionpoint.x, intersectionpoint.y });
+		m_IntersectionPoints.push_back(pointMesh);
+
 		intersecting = true;
 	}
 	if (result2 >= 0 && result2 <= 1)
 	{
-		m_IntersectArea.append({ Lerp(_line.GetVertices()[0].position, _line.GetVertices()[1].position, result2), sf::Color::Green});
+		lineStart = { GetVertices()[1].position.x, GetVertices()[1].position.y, 0.0f };
+		lineEnd = { GetVertices()[2].position.x, GetVertices()[2].position.y, 0.0f };
+		sf::Vector3f intersectionpoint;
+		intersectionpoint = lineStart + (result2 * (lineEnd - lineStart));
+		sf::CircleShape pointMesh(1.0f);
+		pointMesh.setOrigin({ 5.0f,5.0f });
+		pointMesh.setFillColor(sf::Color::Green);
+		pointMesh.setPosition({ intersectionpoint.x, intersectionpoint.y });
+		m_IntersectionPoints.push_back(pointMesh);
+
 		intersecting = true;
 	}
 	if (result3 >= 0 && result3 <= 1)
 	{
-		m_IntersectArea.append({ Lerp(_line.GetVertices()[0].position, _line.GetVertices()[1].position, result3), sf::Color::Green });
+		lineStart = { GetVertices()[2].position.x, GetVertices()[2].position.y, 0.0f };
+		lineEnd = { GetVertices()[0].position.x, GetVertices()[0].position.y, 0.0f };
+		sf::Vector3f intersectionpoint;
+		intersectionpoint = lineStart + (result3 * (lineEnd - lineStart));
+		sf::CircleShape pointMesh(1.0f);
+		pointMesh.setOrigin({ 5.0f,5.0f });
+		pointMesh.setFillColor(sf::Color::Green);
+		pointMesh.setPosition({ intersectionpoint.x, intersectionpoint.y });
+		m_IntersectionPoints.push_back(pointMesh);
+
 		intersecting = true;
-	}	
+	}
 	return intersecting;
 }

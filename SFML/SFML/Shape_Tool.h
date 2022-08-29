@@ -18,7 +18,7 @@ public:
 	virtual void HandleMouseInput(sf::Event& _event, sf::RenderWindow& _renderWindow);
 	virtual void ResetShape();
 	virtual sf::VertexArray GetVertices() const;
-	sf::Vector2f GetNormal();
+	sf::Vector3f GetNormal();
 
 protected:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

@@ -35,12 +35,12 @@ inline float DotProduct(sf::Vector2f _v1, sf::Vector2f _v2)
 
 inline sf::Vector3f CrossProduct(sf::Vector3f _v1, sf::Vector3f _v2)
 {
-    return {((_v1.y * _v2.z) - (_v1.z * _v2.y)), ((_v1.z * _v2.x) - (_v1.x * _v2.z)), ((_v1.x * _v1.y) - (_v1.y * _v2.x))};
+    return { ((_v1.y * _v2.z) - (_v1.z * _v2.y)), ((_v1.z * _v2.x) - (_v1.x * _v2.z)), ((_v1.x * _v1.y) - (_v1.y * _v2.x)) };
 }
 
 inline sf::Vector3f CrossProduct(sf::Vector2f _v1, sf::Vector3f _v2)
 {
-    return { ((_v1.y * _v2.z) - (0 * _v2.y)), ((0 * _v2.x) - (_v1.x * _v2.z)), ((_v1.x * _v1.y) - (_v1.y * _v2.x)) };
+    return { ((_v1.y * _v2.z) - (1.0f * _v2.y)), ((1.0f * _v2.x) - (_v1.x * _v2.z)), ((_v1.x * _v1.y) - (_v1.y * _v2.x)) };
 }
 
 inline float Magnitude(sf::Vector3f _v)
@@ -69,5 +69,13 @@ inline float GetAngleBetweenVectors(sf::Vector3f _v1, sf::Vector3f _v2)
     return acosf(DotProduct(Normalize(_v1), Normalize(_v2)));
 }
 
-
+inline float LinePlaneIntersection(sf::Vector3f _planeNormal, sf::Vector3f _pointOnPlane, sf::Vector3f _lineStart, sf::Vector3f _lineEnd)
+{
+    sf::Vector3f d1 = _pointOnPlane;
+    d1 -= _lineStart;
+    sf::Vector3f d2 = _lineEnd;
+    d2 -= _lineStart;
+    return DotProduct(_planeNormal, d1) / DotProduct(_planeNormal, d2);
+}
+    
 

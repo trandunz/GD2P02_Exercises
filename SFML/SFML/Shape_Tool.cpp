@@ -39,10 +39,10 @@ sf::VertexArray Shape_Tool::GetVertices() const
 	return m_Vertices;
 }
 
-sf::Vector2f Shape_Tool::GetNormal()
+sf::Vector3f Shape_Tool::GetNormal()
 {
-	sf::Vector3f normal = CrossProduct(Normalize(m_Vertices[1].position - m_Vertices[0].position), Normalize({ m_Vertices[0].position.x, m_Vertices[0].position.y, -1 }));
-	return { normal.x, normal.y};
+	sf::Vector3f normal = CrossProduct({ m_Vertices[0].position.x, m_Vertices[0].position.y, 0 }, { m_Vertices[0].position.x, m_Vertices[0].position.y, 1 });
+	return normal;
 }
 
 void Shape_Tool::draw(sf::RenderTarget& target, sf::RenderStates states) const
