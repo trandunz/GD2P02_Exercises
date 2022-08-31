@@ -59,16 +59,17 @@ void PollEvents()
 		if (EventHandle.type == sf::Event::KeyPressed
 			&& sf::Keyboard::isKeyPressed(sf::Keyboard::L))
 		{
+			TriangleTool.ClearIntersectionPoints();
 			TriangleCutter.ResetShape();
 		}
 		if (EventHandle.type == sf::Event::KeyPressed
 			&& sf::Keyboard::isKeyPressed(sf::Keyboard::T))
 		{
 			TriangleTool.ResetShape();
+			TriangleTool.ClearIntersectionPoints();
 		}
 
 		std::cout << TriangleTool.CheckForLineIntersection(TriangleCutter) << std::endl;
-
 		
 		TriangleCutter.HandleMouseInput(EventHandle, RenderWindow);
 		TriangleTool.HandleMouseInput(EventHandle, RenderWindow);
@@ -79,9 +80,9 @@ void Render()
 {
 	RenderWindow.clear();
 
-	RenderWindow.draw(TriangleCutter);
+
 	RenderWindow.draw(TriangleTool);
-	
+	RenderWindow.draw(TriangleCutter);
 
 	RenderWindow.display();
 }

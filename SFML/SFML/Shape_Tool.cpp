@@ -19,11 +19,10 @@ void Shape_Tool::HandleMouseInput(sf::Event& _event, sf::RenderWindow& _renderWi
 	if (_event.type == sf::Event::MouseButtonPressed
 		&& sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		sf::Vector2f mousePos = _renderWindow.mapPixelToCoords(sf::Mouse::getPosition(_renderWindow));
-		m_Vertices.append({ mousePos, sf::Color::Red});
-		if (m_Vertices.getVertexCount() > 2)
+		if (m_Vertices.getVertexCount() < 2)
 		{
-			m_Vertices.resize(2);
+			sf::Vector2f mousePos = _renderWindow.mapPixelToCoords(sf::Mouse::getPosition(_renderWindow));
+			m_Vertices.append({ mousePos, sf::Color::Red });
 		}
 	}
 }
@@ -41,7 +40,13 @@ sf::VertexArray Shape_Tool::GetVertices() const
 
 sf::Vector3f Shape_Tool::GetNormal()
 {
-	sf::Vector3f normal = CrossProduct({ m_Vertices[0].position.x, m_Vertices[0].position.y, 0 }, { m_Vertices[0].position.x, m_Vertices[0].position.y, 1 });
+	sf::Vector3f a{ m_Vertices[1].position.x, m_Vertices[1].position.y, 0 };
+	a -= { m_Vertices[0].position.x, m_Vertices[0].position.y, 0 };
+
+	sf::Vector3f b{ m_Vertices[1].position.x, m_Vertices[1].position.y, 1.0f };
+	b -= { m_Vertices[0].position.x, m_Vertices[0].position.y, 0.0f };
+
+	sf::Vector3f normal = CrossProduct(Normalize(a), Normalize(b));
 	return normal;
 }
 

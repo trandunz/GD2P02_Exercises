@@ -71,10 +71,8 @@ inline float GetAngleBetweenVectors(sf::Vector3f _v1, sf::Vector3f _v2)
 
 inline float LinePlaneIntersection(sf::Vector3f _planeNormal, sf::Vector3f _pointOnPlane, sf::Vector3f _lineStart, sf::Vector3f _lineEnd)
 {
-    sf::Vector3f d1 = _pointOnPlane;
-    d1 -= _lineStart;
-    sf::Vector3f d2 = _lineEnd;
-    d2 -= _lineStart;
+    sf::Vector3f d1 = _pointOnPlane - _lineStart;
+    sf::Vector3f d2 = _lineEnd - _lineStart;
     return DotProduct(_planeNormal, d1) / DotProduct(_planeNormal, d2);
 }
     
