@@ -6,7 +6,7 @@
 sf::RenderWindow RenderWindow;
 sf::Event EventHandler;
 sf::Clock WorldTimer;
-std::vector<Object*> MoverObjects{};
+std::vector<Object*> Objects{};
 std::vector<CapsuleObject*> CapsuleObjects{};
 std::vector<ConvexPolygon*> Polygons{};
 Mesh Triangle(
@@ -51,7 +51,7 @@ void Start()
     Polygons.back()->Scale(200.0f);
     Polygons.back()->SetPosition({ 400, 400 });
 
-    for (auto& mover : MoverObjects)
+    for (auto& mover : Objects)
     {
         mover->SetRenderWindow(RenderWindow);
     }
@@ -77,7 +77,7 @@ void Update()
         ApplyGravity(588.6f);
 
         bool triangleCollided = false;
-        for (auto& mover : MoverObjects)
+        for (auto& mover : Objects)
         {
             if (Triangle.TrianglePointCollision(mover->GetPosition()))
             {
@@ -121,7 +121,7 @@ void HandleEvents()
         if (EventHandler.type == sf::Event::MouseButtonPressed &&
             sf::Mouse::isButtonPressed(sf::Mouse::Right))
         {
-            for (auto& mover : MoverObjects)
+            for (auto& mover : Objects)
             {
                 mover->ApplyForce({ 1000.0f, -50000.0f });
             }
@@ -139,7 +139,7 @@ void Render()
     RenderWindow.clear();
 
     //RenderWindow.draw(Triangle);
-    for (auto& mover : MoverObjects)
+    for (auto& mover : Objects)
     {
         RenderWindow.draw(*mover);
     }
@@ -157,14 +157,14 @@ void Render()
 
 int Cleanup()
 {
-    for (auto& mover : MoverObjects)
+    for (auto& mover : Objects)
     {
         if (mover)
             delete mover;
         mover = nullptr;
     }
-    MoverObjects.clear();
-    MoverObjects.resize(0);
+    Objects.clear();
+    Objects.resize(0);
 
     for (auto& capsule : CapsuleObjects)
     {
@@ -196,7 +196,7 @@ void CalculateDeltaTime()
 
 void ApplyGravity(float _strength)
 {
-    for (auto& mover : MoverObjects)
+    for (auto& mover : Objects)
     {
         mover->ApplyGravity(_strength);
     }

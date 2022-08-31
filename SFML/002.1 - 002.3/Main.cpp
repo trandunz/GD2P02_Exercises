@@ -5,7 +5,7 @@
 sf::RenderWindow RenderWindow;
 sf::Event EventHandler;
 sf::Clock WorldTimer;
-std::vector<Object*> MoverObjects{};
+std::vector<Object*> Objects{};
 LiquidShape WaterBody{ {200,700},{400,200} };
 
 float PreviousFrame = 0.0f;
@@ -33,10 +33,10 @@ int main()
 
 void Start()
 {
-    MoverObjects.emplace_back(new Object({ 200,500 }, 1));
-    MoverObjects.emplace_back(new Object({ 600,500 }, 1));
+    Objects.emplace_back(new Object({ 200,500 }, 1));
+    Objects.emplace_back(new Object({ 600,500 }, 1));
 
-    for (auto& mover : MoverObjects)
+    for (auto& mover : Objects)
     {
         mover->SetRenderWindow(RenderWindow);
     }
@@ -50,9 +50,9 @@ void Update()
         HandleEvents();
         ApplyGravity(588.6f);
 
-        WaterBody.CheckForCollisions(MoverObjects);
+        WaterBody.CheckForCollisions(Objects);
 
-        for (auto& mover : MoverObjects)
+        for (auto& mover : Objects)
         {
             mover->UpdatePhysics(FIXED_DT);
             mover->Update(DeltaTime);
@@ -72,7 +72,7 @@ void HandleEvents()
         if (EventHandler.type == sf::Event::MouseButtonPressed &&
             sf::Mouse::isButtonPressed(sf::Mouse::Right))
         {
-            for (auto& mover : MoverObjects)
+            for (auto& mover : Objects)
             {
                 mover->ApplyForce({ 0, -50000.0f });
             }
@@ -85,7 +85,7 @@ void Render()
 {
     RenderWindow.clear();
 
-    for (auto& mover : MoverObjects)
+    for (auto& mover : Objects)
     {
         RenderWindow.draw(*mover);
     }
@@ -96,14 +96,14 @@ void Render()
 
 int Cleanup()
 {
-    for (auto& mover : MoverObjects)
+    for (auto& mover : Objects)
     {
         if (mover)
             delete mover;
         mover = nullptr;
     }
-    MoverObjects.clear();
-    MoverObjects.resize(0);
+    Objects.clear();
+    Objects.resize(0);
 
     return 0;
 }
@@ -117,7 +117,7 @@ void CalculateDeltaTime()
 
 void ApplyGravity(float _strength)
 {
-    for (auto& mover : MoverObjects)
+    for (auto& mover : Objects)
     {
         mover->ApplyGravity(_strength);
     }
