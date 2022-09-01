@@ -41,15 +41,15 @@ int main()
 
 void Start()
 {
-    //MoverObjects.emplace_back(new Object({ 200,500 }, 1));
-    //MoverObjects.emplace_back(new Object({ 600,500 }, 1));
+    Objects.emplace_back(new Object({ 200,500 }, 1));
+    Objects.emplace_back(new Object({ 600,500 }, 1));
 
-    //CapsuleObjects.emplace_back(new CapsuleObject({ 400, 400 }, { 400, 450 }, 20.0f, 1, sf::Color::Red));
-    //CapsuleObjects.emplace_back(new CapsuleObject({ 400, 200 }, { 400, 250 }, 20.0f, 1, sf::Color::Green));
+    CapsuleObjects.emplace_back(new CapsuleObject({ 380, 400 }, { 380, 450 }, 20.0f, 1, sf::Color::Red));
+    CapsuleObjects.emplace_back(new CapsuleObject({ 400, 200 }, { 400, 250 }, 20.0f, 1, sf::Color::Green));
 
-    Polygons.emplace_back(new ConvexPolygon({ 0,0 }, 1));
-    Polygons.back()->Scale(200.0f);
-    Polygons.back()->SetPosition({ 400, 400 });
+    //Polygons.emplace_back(new ConvexPolygon({ 0,0 }, 1));
+    //Polygons.back()->Scale(200.0f);
+    //Polygons.back()->SetPosition({ 400, 400 });
 
     for (auto& mover : Objects)
     {
@@ -77,15 +77,15 @@ void Update()
         ApplyGravity(588.6f);
 
         bool triangleCollided = false;
-        for (auto& mover : Objects)
+        for (auto& object : Objects)
         {
-            if (Triangle.TrianglePointCollision(mover->GetPosition()))
+            if (Triangle.TrianglePointCollision(object->GetPosition()))
             {
-                sf::Vector2f repulsiveForce = Normalize(mover->GetPosition()- Triangle.GetCentre());
-                mover->ApplyForce(repulsiveForce * 10000.0f);
+                sf::Vector2f repulsiveForce = Normalize(object->GetPosition()- Triangle.GetCentre());
+                object->ApplyForce(repulsiveForce * 10000.0f);
             }
-            mover->UpdatePhysics(FIXED_DT);
-            mover->Update(DeltaTime);
+            object->UpdatePhysics(FIXED_DT);
+            object->Update(DeltaTime);
         }
 
         for (auto& capsule : CapsuleObjects)
@@ -138,7 +138,7 @@ void Render()
 {
     RenderWindow.clear();
 
-    //RenderWindow.draw(Triangle);
+    RenderWindow.draw(Triangle);
     for (auto& mover : Objects)
     {
         RenderWindow.draw(*mover);

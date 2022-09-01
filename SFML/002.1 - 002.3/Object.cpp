@@ -2,7 +2,7 @@
 
 Object::Object(sf::Vector2f _startPos, float _mass)
 {
-	m_Mesh = new sf::CircleShape(50.0f);
+	m_Mesh = new sf::CircleShape(_mass * 10.0f);
 	m_Mesh->setFillColor(sf::Color::Green);
 	m_Mesh->setOutlineColor(sf::Color::Red);
 	m_Mesh->setOutlineThickness(10.0f);
@@ -121,6 +121,6 @@ float Object::GetReferenceArea() const
 	if (m_Mesh == nullptr)
 		return 0.0f;
 
-	float scaledRadius = m_Mesh->getRadius() / 1000.0f;
+	float scaledRadius = (m_Mesh->getRadius() / 500.0f);
 	return PI * (scaledRadius * scaledRadius);
 }

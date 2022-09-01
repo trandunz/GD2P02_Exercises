@@ -46,7 +46,6 @@ void LiquidShape::ApplyFriction(Object& _object)
     float waterDensity = 0.997f;
     float waterDragCoefficient = 0.345f;
     sf::Vector2f unitVelocity = Normalize(_object.GetVelocity());
-    
 
     sf::Vector2f dragForce = (unitVelocity * -1.0f) * ((waterDragCoefficient * waterDensity * (objectSpeed * objectSpeed) * area) / 2.0f);
     _object.ApplyForce(dragForce);

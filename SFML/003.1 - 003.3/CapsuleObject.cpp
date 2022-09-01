@@ -78,8 +78,7 @@ bool CapsuleObject::CheckCollision(CapsuleObject& _capsule)
 	float distance = Mag(Top.getPosition() - projectedPoint);
 	if (distance <= _capsule.m_Radius + m_Radius)
 	{
-		m_Velocity.y *= -1;
-		//ApplyForce(Normalize(vectorToPoint) * 10000.0f);
+		ApplyForce(Normalize(vectorToPoint) * 10000.0f);
 		std::cout << "Collision!" << std::endl;
 		return true;
 	}
@@ -98,28 +97,28 @@ void CapsuleObject::CollideCircleWithBounds(sf::CircleShape& _circle)
 {
 	if (_circle.getPosition().y + _circle.getRadius() >= m_RenderWindow->getSize().y)
 	{
-		float collisionDepth = m_RenderWindow->getSize().y - (_circle.getPosition().y + _circle.getRadius());
+		float collisionDepth = m_RenderWindow->getSize().y - abs(_circle.getPosition().y + _circle.getRadius());
 
 		OffsetShapes({ 0,collisionDepth });
 		m_Velocity.y *= -1;
 	}
 	if (_circle.getPosition().y - _circle.getRadius() <= 0)
 	{
-		float collisionDepth = 0 + (_circle.getPosition().y - _circle.getRadius());
+		float collisionDepth = abs(_circle.getPosition().y - _circle.getRadius());
 
 		OffsetShapes({ 0,collisionDepth });
 		m_Velocity.y *= -1;
 	}
 	if (_circle.getPosition().x + _circle.getRadius() >= m_RenderWindow->getSize().x)
 	{
-		float collisionDepth = m_RenderWindow->getSize().x - _circle.getPosition().x + _circle.getRadius();
+		float collisionDepth = m_RenderWindow->getSize().x - abs(_circle.getPosition().x + _circle.getRadius());
 
 		OffsetShapes({ collisionDepth,0 });
 		m_Velocity.x *= -1;
 	}
 	if (_circle.getPosition().x - _circle.getRadius() <= 0)
 	{
-		float collisionDepth = 0 + _circle.getPosition().x - _circle.getRadius();
+		float collisionDepth = abs(_circle.getPosition().x - _circle.getRadius());
 		OffsetShapes({ collisionDepth,0 });
 		m_Velocity.x *= -1;
 	}

@@ -34,7 +34,7 @@ int main()
 void Start()
 {
     Objects.emplace_back(new Object({ 200,500 }, 1));
-    Objects.emplace_back(new Object({ 600,500 }, 1));
+    Objects.emplace_back(new Object({ 600,500 }, 5));
 
     for (auto& mover : Objects)
     {
@@ -49,6 +49,14 @@ void Update()
         CalculateDeltaTime();
         HandleEvents();
         ApplyGravity(588.6f);
+
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            for (auto& mover : Objects)
+            {
+                mover->ApplyForce({ 1000, 0 });
+            }
+        }
 
         WaterBody.CheckForCollisions(Objects);
 
