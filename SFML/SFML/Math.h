@@ -43,6 +43,12 @@ inline sf::Vector3f CrossProduct(sf::Vector2f _v1, sf::Vector3f _v2)
     return { ((_v1.y * _v2.z) - (1.0f * _v2.y)), ((1.0f * _v2.x) - (_v1.x * _v2.z)), ((_v1.x * _v1.y) - (_v1.y * _v2.x)) };
 }
 
+inline float Magnitude(sf::Vector2f _v)
+{
+    return sqrtf((_v.x * _v.x) + (_v.y * _v.y));
+}
+
+
 inline float Magnitude(sf::Vector3f _v)
 {
     return sqrtf((_v.x * _v.x) + (_v.y * _v.y) + (_v.z * _v.z));

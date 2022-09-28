@@ -1,94 +1,109 @@
-#include "Triangle_Tool.h"
-#include "box2d/box2d.h"
+#include "Grass.h"
+#include "Object.h"
+#include "Math.h"
+#include "Worm.h"
 
-sf::RenderWindow RenderWindow;
-sf::Event EventHandle;
-Shape_Tool TriangleCutter;
-Triangle_Tool TriangleTool;
+#define FIXED_DT 0.01666666666666666666f
 
-void InitRenderWindow(sf::Vector2i _size, std::string _title, sf::Uint32 _style, sf::ContextSettings _settings);
+sf::RenderWindow RenderWindow{};
+sf::Event EventHandler{};
+sf::Clock WorldTimer{};
+std::vector<Grass*> Grasses{};
+std::vector<Worm*> Worms{};
+
+float PreviousFrame = 0.0f;
+float DeltaTime = 0.0f;
 
 void Start();
 void Update();
-void PollEvents();
+void HandleEvents();
 void Render();
-
 int Cleanup();
+
+void CalculateDeltaTime();
 
 int main()
 {
-	InitRenderWindow({ 800, 800 }, "Title", sf::Style::Default, sf::ContextSettings());
+    RenderWindow.create(sf::VideoMode(800, 800), "Exercises 009.1 - 009.3");
+    RenderWindow.setFramerateLimit(60);
 
-	Start();
-	Update();
-	Render();
+    Start();
+    Update();
 
-	return Cleanup();
-}
-
-void InitRenderWindow(sf::Vector2i _size, std::string _title, sf::Uint32 _style, sf::ContextSettings _settings)
-{
-	RenderWindow.create(sf::VideoMode(_size.x, _size.y), _title, _style, _settings);
+    return Cleanup();
 }
 
 void Start()
 {
+    for (unsigned i = 0; i < 10; i++)
+    {
+        Grasses.emplace_back(new Grass(20, 0.04f, { 100.0f + 100 * i, 800 }));
+    }
 
+    Worms.emplace_back(new Worm({ 400.0f,400.0f }, 1000, 1));
 }
 
 void Update()
 {
-	while (RenderWindow.isOpen())
-	{
-		PollEvents();
+    while (RenderWindow.isOpen())
+    {
+        CalculateDeltaTime();
+        HandleEvents();
 
-		
+        for (auto& grass : Grasses)
+        {
+            grass->Update(DeltaTime);
+        }
 
-		Render();
-	}
+        sf::Vector2f mousePos = RenderWindow.mapPixelToCoords(sf::Mouse::getPosition(RenderWindow));
+        for (auto& worm : Worms)
+        {
+            worm->Update(DeltaTime, mousePos);
+        }
+
+        Render();
+    }
 }
 
-void PollEvents()
+void HandleEvents()
 {
-	if (RenderWindow.pollEvent(EventHandle))
-	{
-		if (EventHandle.type == sf::Event::Closed)
-		{
-			RenderWindow.close();
-		}
-		if (EventHandle.type == sf::Event::KeyPressed
-			&& sf::Keyboard::isKeyPressed(sf::Keyboard::L))
-		{
-			TriangleTool.ClearIntersectionPoints();
-			TriangleCutter.ResetShape();
-		}
-		if (EventHandle.type == sf::Event::KeyPressed
-			&& sf::Keyboard::isKeyPressed(sf::Keyboard::T))
-		{
-			TriangleTool.ResetShape();
-			TriangleTool.ClearIntersectionPoints();
-		}
-
-		std::cout << TriangleTool.CheckForLineIntersection(TriangleCutter) << std::endl;
-		
-		TriangleCutter.HandleMouseInput(EventHandle, RenderWindow);
-		TriangleTool.HandleMouseInput(EventHandle, RenderWindow);
-	}
+    while (RenderWindow.pollEvent(EventHandler))
+    {
+        if (EventHandler.type == sf::Event::Closed)
+            RenderWindow.close();
+        
+        if (EventHandler.type == sf::Event::MouseButtonPressed)
+        {
+        }
+    }
 }
 
 void Render()
 {
-	RenderWindow.clear();
+    RenderWindow.clear();
 
+    for (auto& grass : Grasses)
+    {
+        RenderWindow.draw(*grass);
+    }
+    for (auto& worm : Worms)
+    {
+        RenderWindow.draw(*worm);
+    }
 
-	RenderWindow.draw(TriangleTool);
-	RenderWindow.draw(TriangleCutter);
-
-	RenderWindow.display();
+    RenderWindow.display();
 }
 
 int Cleanup()
 {
+    CleanupVector(Grasses);
+    CleanupVector(Worms);
+    return 0;
+}
 
-	return 0;
+void CalculateDeltaTime()
+{
+    float currentTime = WorldTimer.getElapsedTime().asSeconds();
+    DeltaTime = currentTime - PreviousFrame;
+    PreviousFrame = currentTime;
 }

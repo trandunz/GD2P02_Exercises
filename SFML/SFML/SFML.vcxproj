@@ -24,7 +24,7 @@
     <ProjectGuid>{f1db040d-9e3e-4bea-91e3-9ab1a3639467}</ProjectGuid>
     <RootNamespace>SFML</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>001.4 - Triangle Cutter</ProjectName>
+    <ProjectName>009.1 - 009.3</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -158,14 +158,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Grass.cpp" />
+    <ClCompile Include="IKSegment.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Shape_Tool.cpp" />
-    <ClCompile Include="Triangle_Tool.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Segment.cpp" />
+    <ClCompile Include="SpringJoint.cpp" />
+    <ClCompile Include="Worm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Grass.h" />
+    <ClInclude Include="IKSegment.h" />
     <ClInclude Include="Math.h" />
-    <ClInclude Include="Shape_Tool.h" />
-    <ClInclude Include="Triangle_Tool.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="Segment.h" />
+    <ClInclude Include="SpringJoint.h" />
+    <ClInclude Include="Utility.h" />
+    <ClInclude Include="Worm.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
