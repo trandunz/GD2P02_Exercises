@@ -10,7 +10,9 @@ public:
 
 	void Follow(float _dt, sf::Vector2f _target = {});
 	void Update(float _dt);
+	void UpdatePositonB(float _dt);
 
+	sf::Vector2f GetA();
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
@@ -23,6 +25,7 @@ private:
 
 	float m_Length{};
 	float m_Radians{};
+
 
 	sf::VertexArray m_VertexArray{ sf::PrimitiveType::Lines };
 };

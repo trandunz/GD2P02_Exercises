@@ -40,7 +40,7 @@ void Start()
         Grasses.emplace_back(new Grass(20, 0.04f, { 100.0f + 100 * i, 800 }));
     }
 
-    Worms.emplace_back(new Worm({ 400.0f,400.0f }, 1000, 1));
+    Worms.emplace_back(new Worm({ 400.0f,400.0f }, 300, 1));
 }
 
 void Update()

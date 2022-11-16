@@ -51,6 +51,19 @@ void IKSegment::Update(float _dt)
 	}
 }
 
+void IKSegment::UpdatePositonB(float _dt)
+{
+	m_B = m_A + CalculatePositionB();
+
+	m_VertexArray[0].position = m_A;
+	m_VertexArray[1].position = m_B;
+}
+
+sf::Vector2f IKSegment::GetA()
+{
+	return m_A;
+}
+
 void IKSegment::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(m_VertexArray);
